@@ -3,12 +3,11 @@
 //  ChuGui01
 //
 //  Created by wkxx on 2017/4/14.
-//  Copyright © 2017年 李战雷. All rights reserved.
+//  Copyright © 2017年 WYL. All rights reserved.
 //
 
 #import "WKWebImageBlurOperation.h"
-#import "FXBlurView.h" 
-#import "WKImageScaleTool.h"
+#import "FXBlurView.h"
 
 #define KBlueImageMaxSize 300
 
@@ -59,9 +58,9 @@
         //如果图片过大，强行重新绘制图片
         if (self.needBlurImage.size.width > KBlueImageMaxSize && self.needBlurImage.size.height > KBlueImageMaxSize) {
             if (self.needBlurImage.size.width > self.needBlurImage.size.height) {
-                self.needBlurImage = [WKImageScaleTool imageWithImageSimple:self.needBlurImage scaledToSize:CGSizeMake(KBlueImageMaxSize , self.needBlurImage.size.height / self.needBlurImage.size.width * KBlueImageMaxSize)];
+                self.needBlurImage = [self imageWithImageSimple:self.needBlurImage scaledToSize:CGSizeMake(KBlueImageMaxSize , self.needBlurImage.size.height / self.needBlurImage.size.width * KBlueImageMaxSize)];
             }else{
-                self.needBlurImage = [WKImageScaleTool imageWithImageSimple:self.needBlurImage scaledToSize:CGSizeMake(self.needBlurImage.size.width / self.needBlurImage.size.height * KBlueImageMaxSize ,  KBlueImageMaxSize)];
+                self.needBlurImage = [self imageWithImageSimple:self.needBlurImage scaledToSize:CGSizeMake(self.needBlurImage.size.width / self.needBlurImage.size.height * KBlueImageMaxSize ,  KBlueImageMaxSize)];
             }
         }
         UIImage * blueImage = [self.needBlurImage blurredImageWithRadius:10 iterations:3 tintColor:[UIColor blackColor]];
@@ -119,6 +118,22 @@
     self.cancelBlock = nil;
     self.completedBlock = nil;
     self.thread = nil;
+}
+
+- (UIImage *)imageWithImageSimple:(UIImage *)image scaledToSize:(CGSize)newSize {
+    
+    // Create a graphics image context
+    UIGraphicsBeginImageContext(newSize);
+    // Tell the old image to draw in this new context, with the desired
+    // new size
+    [image drawInRect:CGRectMake (0, 0, newSize.width, newSize. height)];
+    // Get the new image from the context
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    // End the context
+    UIGraphicsEndImageContext();
+    
+    // Return the new image.
+    return newImage;
 }
 
 @end

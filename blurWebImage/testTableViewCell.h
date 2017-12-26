@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface testTableViewCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UIImageView *bigImageView;
 
 @end
